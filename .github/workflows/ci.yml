@@ -8,7 +8,6 @@ on:
 jobs:
   run-jmeter-tests:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,7 +26,7 @@ jobs:
           jmeter -g results/results.jtl -o results/jmeter-report
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: JMeter Test Report
           path: results/jmeter-report
