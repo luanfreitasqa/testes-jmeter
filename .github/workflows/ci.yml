@@ -1,0 +1,33 @@
+name: Run JMeter Tests
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  run-jmeter-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JMeter
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jmeter
+
+      - name: Run JMeter Tests
+        run: |
+          jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
+
+      - name: Generate Report
+        run: |
+          jmeter -g results/results.jtl -o results/jmeter-report
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: JMeter Test Report
+          path: results/jmeter-report
