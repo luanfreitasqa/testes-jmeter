@@ -23,10 +23,15 @@ jobs:
 
       - name: Generate Report
         run: |
-          jmeter -g results/results.jtl -o results/jmeter-report
+            jmeter -g results/results.jtl -o results/jmeter-report
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v3
         with:
           name: JMeter Test Report
           path: results/jmeter-report
+
+      - name: Debug JMeter Test
+        run: |
+            jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
+            cat results/results.jtl
