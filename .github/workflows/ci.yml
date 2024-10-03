@@ -29,6 +29,10 @@ jobs:
         run: |
             jmeter -g results/results.jtl -o results/jmeter-report
 
+      - name: List report results
+        run: |
+          ls -l results/jmeter-report # Comando para listar os arquivos gerados na pasta de relatório
+
       - name: Upload Test Results
         uses: actions/upload-artifact@v3
         with:
