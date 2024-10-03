@@ -1,13 +1,12 @@
 name: Run JMeter Tests and Deploy Report
 
 on:
+  schedule:
+    - cron: '30 21 * * *'  # Executa diariamente às 21:30 UTC (18:30 BRT)
   workflow_dispatch:
   push:
     branches:
       - master
-
-permissions:
-  contents: write
 
 jobs:
   run-jmeter-tests:
@@ -16,13 +15,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          persist-credentials: false  # Evita usar o GITHUB_TOKEN padrão
+          persist-credentials: false  # Evita conflitos de credenciais
 
       - name: Set up Git for PAT
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git remote set-url origin https://luanfreitasqa:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/luanfreitasqa/testes-south-jmeter.git
 
       - name: Set up JMeter
         run: |
@@ -44,6 +42,10 @@ jobs:
         run: |
           jmeter -g results/results.jtl -o results/jmeter-report
 
+      - name: Compress Report into ZIP
+        run: |
+          zip -r results/jmeter-report.zip results/jmeter-report
+
       - name: List report results
         run: |
           ls -l results
@@ -55,3 +57,10 @@ jobs:
           personal_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./results/jmeter-report
           publish_branch: gh-pages
+
+      - name: Upload ZIP as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: JMeter Report ZIP
+          path: results/jmeter-report.zip
+          if-no-files-found: error
