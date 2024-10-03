@@ -1,7 +1,7 @@
 name: Run JMeter Tests
 
 on:
-  workflow_dispatch: # Permite a execução manual do workflow
+  workflow_dispatch: 
   push:
     branches:
       - master
@@ -23,23 +23,18 @@ jobs:
       - name: Run JMeter Tests
         run: |
           jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
-          ls -l results # Comando para listar os arquivos gerados na pasta results
+          ls -l results
 
       - name: Generate Report
         run: |
             jmeter -g results/results.jtl -o results/jmeter-report
 
-      - name: List report results
+      - name: Commit and Push to gh-pages
         run: |
-          ls -l results/jmeter-report # Comando para listar os arquivos gerados na pasta de relatório
-
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: JMeter Test Report
-          path: results/jmeter-report
-
-      - name: Debug JMeter Test
-        run: |
-            jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
-            cat results/results.jtl
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout gh-pages
+          cp -R results/jmeter-report/* .
+          git add .
+          git commit -m "Atualizando o relatório JMeter"
+          git push origin gh-pages
