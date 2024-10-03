@@ -14,8 +14,10 @@ jobs:
 
       - name: Set up JMeter
         run: |
-          sudo apt-get update
-          sudo apt-get install jmeter=5.4.3
+          wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.5.tgz
+          tar -xvzf apache-jmeter-5.5.tgz
+          sudo mv apache-jmeter-5.5 /opt/jmeter
+          sudo ln -s /opt/jmeter/bin/jmeter /usr/local/bin/jmeter
 
       - name: Run JMeter Tests
         run: |
