@@ -23,6 +23,7 @@ jobs:
       - name: Run JMeter Tests
         run: |
           jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
+          ls -l results # Comando para listar os arquivos gerados na pasta results
 
       - name: Generate Report
         run: |
