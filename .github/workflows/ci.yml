@@ -54,4 +54,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "Atualizando relatórios do JMeter"
-          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/luanfreitasqa/testes-s
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/luanfreitasqa/testes-south-jmeter.git gh-pages
