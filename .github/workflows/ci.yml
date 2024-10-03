@@ -27,7 +27,6 @@ jobs:
       - name: Run JMeter Tests
         run: |
           jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
-          ls -l results
 
       - name: Generate Report
         run: |
@@ -37,25 +36,8 @@ jobs:
         run: |
           ls -l results/jmeter-report
 
-      - name: Upload Test Results
+      - name: Upload Test Results as Artifact
         uses: actions/upload-artifact@v3
         with:
           name: JMeter Test Report
           path: results/jmeter-report
-
-      - name: Set up GitHub Pages
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -m "Atualizando relatórios do JMeter"
-          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/luanfreitasqa/testes-south-jmeter.git gh-pages
-
-      - name: Publish report to gh-pages
-        run: |
-          git fetch origin
-          git checkout gh-pages
-          cp -r results/jmeter-report/* .
-          git add .
-          git commit -m "Atualizando relatórios do JMeter"
-          git push origin gh-pages
