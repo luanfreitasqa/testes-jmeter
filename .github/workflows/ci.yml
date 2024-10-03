@@ -38,10 +38,6 @@ jobs:
         with:
           name: JMeter Test Report
           path: results/jmeter-report
-
-      - name: Clear Git credentials cache
-        run: |
-            git config --global --unset credential.helper
         
       - name: Set up Git credentials
         run: |
