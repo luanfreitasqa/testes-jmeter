@@ -39,11 +39,15 @@ jobs:
           name: JMeter Test Report
           path: results/jmeter-report
 
+      - name: Clear Git credentials cache
+        run: |
+            git config --global --unset credential.helper
+        
       - name: Set up Git credentials
         run: |
             git config --global user.name 'github-actions[bot]'
             git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-            git remote set-url origin https://github-actions:${{ secrets.GH_TOKEN }}@github.com/luanfreitasqa/testes-south-jmeter.git
+            git remote set-url origin https://x-access-token:${{ secrets.reposouth2 }}@github.com/luanfreitasqa/testes-south-jmeter.git
 
       - name: Publish report to gh-pages
         run: |
