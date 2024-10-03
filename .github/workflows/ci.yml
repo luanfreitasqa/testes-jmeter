@@ -1,7 +1,7 @@
 name: Run JMeter Tests
 
 on:
-  workflow_dispatch: # Permite a execução manual do workflow
+  workflow_dispatch:
   push:
     branches:
       - master
@@ -23,15 +23,15 @@ jobs:
       - name: Run JMeter Tests
         run: |
           jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
-          ls -l results # Comando para listar os arquivos gerados na pasta results
+          ls -l results
 
       - name: Generate Report
         run: |
-            jmeter -g results/results.jtl -o results/jmeter-report
+          jmeter -g results/results.jtl -o results/jmeter-report
 
       - name: List report results
         run: |
-          ls -l results/jmeter-report # Comando para listar os arquivos gerados na pasta de relatório
+          ls -l results/jmeter-report
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v3
@@ -43,7 +43,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:reposouth@github.com/luanfreitasqa/testes-south-jmeter.git
+          git remote set-url origin https://x-access-token:$GH_TOKEN@github.com/luanfreitasqa/testes-south-jmeter.git
 
       - name: Publish report to gh-pages
         run: |
