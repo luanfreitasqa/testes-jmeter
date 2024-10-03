@@ -20,6 +20,10 @@ jobs:
           sudo mv apache-jmeter-5.6.3 /opt/jmeter
           sudo ln -s /opt/jmeter/bin/jmeter /usr/local/bin/jmeter
 
+      - name: Clean results folder
+        run: |
+          rm -rf results/*
+
       - name: Run JMeter Tests
         run: |
           jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
@@ -29,12 +33,29 @@ jobs:
         run: |
           jmeter -g results/results.jtl -o results/jmeter-report
 
-      - name: Compress Report into ZIP
+      - name: List report results
         run: |
-          zip -r jmeter-report.zip results/jmeter-report
+          ls -l results/jmeter-report
 
-      - name: Upload ZIP Artifact
+      - name: Upload Test Results
         uses: actions/upload-artifact@v3
         with:
-          name: JMeter Report ZIP
-          path: jmeter-report.zip
+          name: JMeter Test Report
+          path: results/jmeter-report
+
+      - name: Set up GitHub Pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Atualizando relatórios do JMeter"
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/luanfreitasqa/testes-south-jmeter.git gh-pages
+
+      - name: Publish report to gh-pages
+        run: |
+          git fetch origin
+          git checkout gh-pages
+          cp -r results/jmeter-report/* .
+          git add .
+          git commit -m "Atualizando relatórios do JMeter"
+          git push origin gh-pages
