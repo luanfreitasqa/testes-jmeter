@@ -22,32 +22,34 @@ jobs:
 
       - name: Run JMeter Tests
         run: |
-          mkdir -p results
           jmeter -n -t jmeter-tests/Test\ Plan\ South.jmx -l results/results.jtl
-          ls -l results # Verificar se os arquivos foram gerados
+          ls -l results # Comando para listar os arquivos gerados na pasta results
 
       - name: Generate Report
         run: |
             jmeter -g results/results.jtl -o results/jmeter-report
-            ls -l results/jmeter-report # Verificar se o relatório foi gerado
 
-      - name: Create or checkout gh-pages
+      - name: List report results
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git fetch origin
-          git checkout gh-pages || git checkout --orphan gh-pages
-          git reset --hard
-
-      - name: Copy Results to gh-pages
-        run: |
-          cp -r results/jmeter-report/* .
-          git add .
-          git commit -m "Atualizando relatórios do JMeter"
-          git push origin gh-pages
+          ls -l results/jmeter-report # Comando para listar os arquivos gerados na pasta de relatório
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v3
         with:
           name: JMeter Test Report
           path: results/jmeter-report
+
+      - name: Set up Git credentials
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:reposouth@github.com/luanfreitasqa/testes-south-jmeter.git
+
+      - name: Publish report to gh-pages
+        run: |
+          git fetch origin
+          git checkout gh-pages
+          cp -r results/jmeter-report/* .
+          git add .
+          git commit -m "Atualizando relatórios do JMeter"
+          git push origin gh-pages
