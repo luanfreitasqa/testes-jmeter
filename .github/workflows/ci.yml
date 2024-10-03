@@ -22,7 +22,8 @@ jobs:
 
       - name: Clean results folder
         run: |
-          rm -rf results/*
+          rm -rf results/* || true
+          mkdir -p results/jmeter-report
 
       - name: Run JMeter Tests
         run: |
@@ -34,6 +35,7 @@ jobs:
 
       - name: List report results
         run: |
+          ls -l results
           ls -l results/jmeter-report
 
       - name: Upload Test Results as Artifact
@@ -41,3 +43,4 @@ jobs:
         with:
           name: JMeter Test Report
           path: results/jmeter-report
+          if-no-files-found: error
