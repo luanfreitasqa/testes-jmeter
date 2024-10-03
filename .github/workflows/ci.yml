@@ -6,12 +6,23 @@ on:
     branches:
       - master
 
+permissions:
+  contents: write
+
 jobs:
   run-jmeter-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false  # Evita usar o GITHUB_TOKEN padrão
+
+      - name: Set up Git for PAT
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git remote set-url origin https://luanfreitasqa:${{ secrets.ACTIONS_DEPLOY_KEY }}@github.com/luanfreitasqa/testes-south-jmeter.git
 
       - name: Set up JMeter
         run: |
@@ -41,6 +52,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./results/jmeter-report
           publish_branch: gh-pages
