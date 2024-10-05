@@ -9,54 +9,31 @@ on:
       - master
 
 jobs:
-  run-jmeter-tests:
+  build-and-run-jmeter:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false  # Evita conflitos de credenciais
 
-      - name: Set up Git for PAT
+      - name: Set up Docker Build
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          docker build -t jmeter-tests .
 
-      - name: Set up JMeter
+      - name: Run JMeter Tests in Docker
         run: |
-          wget https://dlcdn.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
-          tar -xvzf apache-jmeter-5.6.3.tgz
-          sudo mv apache-jmeter-5.6.3 /opt/jmeter
-          sudo ln -s /opt/jmeter/bin/jmeter /usr/local/bin/jmeter
+          docker run --rm -v $PWD/results:/opt/jmeter/results jmeter-tests
 
-      - name: Clean results folder
+      - name: List results
         run: |
-          rm -rf results/* || true
-          mkdir -p results/jmeter-report
-
-      - name: Run JMeter Tests
-        run: |
-          jmeter -n -t "jmeter-tests/Test Plan South.jmx" -l results/results.jtl
+          ls -l results
 
       - name: Generate Report
         run: |
-          jmeter -g results/results.jtl -o results/jmeter-report
+          docker run --rm -v $PWD/results:/opt/jmeter/results jmeter -g /opt/jmeter/results/results.jtl -o /opt/jmeter/results/jmeter-report
 
       - name: Compress Report into ZIP
         run: |
           zip -r results/jmeter-report.zip results/jmeter-report
-
-      - name: List report results
-        run: |
-          ls -l results
-          ls -l results/jmeter-report
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          personal_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          publish_dir: ./results/jmeter-report
-          publish_branch: gh-pages
 
       - name: Upload ZIP as Artifact
         uses: actions/upload-artifact@v3
@@ -64,3 +41,10 @@ jobs:
           name: JMeter Report ZIP
           path: results/jmeter-report.zip
           if-no-files-found: error
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./results/jmeter-report
+          publish_branch: gh-pages
