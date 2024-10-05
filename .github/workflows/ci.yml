@@ -21,6 +21,7 @@ jobs:
 
       - name: Run JMeter Tests in Docker
         run: |
+          mkdir -p results
           docker run --rm -v $PWD/results:/opt/jmeter/results jmeter-tests
 
       - name: List results
@@ -29,7 +30,7 @@ jobs:
 
       - name: Generate Report
         run: |
-          docker run --rm -v $PWD/results:/opt/jmeter/results jmeter -g /opt/jmeter/results/results.jtl -o /opt/jmeter/results/jmeter-report
+          docker run --rm -v $PWD/results:/opt/jmeter/results justb4/jmeter:5.5 -g /opt/jmeter/results/results.jtl -o /opt/jmeter/results/jmeter-report
 
       - name: Compress Report into ZIP
         run: |
