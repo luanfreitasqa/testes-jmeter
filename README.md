@@ -5,7 +5,7 @@
 Este projeto automatiza a execução de testes de performance utilizando o **Apache JMeter**, gera relatórios em HTML, publica os relatórios no **GitHub Pages** e cria um arquivo ZIP dos relatórios. O pipeline é agendado para ser executado diariamente às **18:30 no horário de Brasília**.
 
 Para verificar os testes e o HTML do dia anterior é:
-https://luanfreitasqa.github.io/testes-south-jmeter/index.html
+https://luanfreitasqa.github.io/testes-jmeter/index.html
 
 ## Pré-requisitos
 
