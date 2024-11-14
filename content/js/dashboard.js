@@ -173,7 +173,7 @@ $(document).ready(function() {
     });
 
     // Creates APDEX table
-    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.7246666666666667, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [0.704, 500, 1500, "Escolha do destino"], "isController": false}, {"data": [0.734, 500, 1500, "Escolha da passagem"], "isController": false}, {"data": [0.736, 500, 1500, "Confirmação de compra"], "isController": false}]}, function(index, item){
+    createTable($("#apdexTable"), {"supportsControllersDiscrimination": true, "overall": {"data": [0.994, 500, 1500, "Total"], "isController": false}, "titles": ["Apdex", "T (Toleration threshold)", "F (Frustration threshold)", "Label"], "items": [{"data": [0.982, 500, 1500, "Escolha do destino"], "isController": false}, {"data": [1.0, 500, 1500, "Escolha da passagem"], "isController": false}, {"data": [1.0, 500, 1500, "Confirmação de compra"], "isController": false}]}, function(index, item){
         switch(index){
             case 0:
                 item = item.toFixed(3);
@@ -187,7 +187,7 @@ $(document).ready(function() {
     }, [[0, 0]], 3);
 
     // Create statistics table
-    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 750, 0, 0.0, 612.4586666666667, 126, 1804, 522.5, 1222.6999999999998, 1389.4999999999993, 1601.1300000000003, 61.97322756569162, 401.0510272062469, 26.6694683729962], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["Escolha do destino", 250, 0, 0.0, 649.9640000000002, 164, 1804, 542.5, 1273.5, 1441.2499999999998, 1725.6000000000013, 22.39340738086707, 161.41185534978501, 8.5506077010928], "isController": false}, {"data": ["Escolha da passagem", 250, 0, 0.0, 591.14, 126, 1533, 524.5, 1186.8, 1360.45, 1503.9, 22.870734607995608, 150.06686116320557, 8.330843758576526], "isController": false}, {"data": ["Confirmação de compra", 250, 0, 0.0, 596.2719999999997, 127, 1691, 506.5, 1222.7, 1366.25, 1647.4400000000005, 22.24199288256228, 125.54597141903915, 12.12014846530249], "isController": false}]}, function(index, item){
+    createTable($("#statisticsTable"), {"supportsControllersDiscrimination": true, "overall": {"data": ["Total", 750, 0, 0.0, 165.14800000000014, 95, 698, 151.0, 210.0, 258.0, 573.3800000000006, 72.61812548412084, 469.9395000242061, 31.250378219403565], "isController": false}, "titles": ["Label", "#Samples", "FAIL", "Error %", "Average", "Min", "Max", "Median", "90th pct", "95th pct", "99th pct", "Transactions/s", "Received", "Sent"], "items": [{"data": ["Escolha do destino", 250, 0, 0.0, 191.5119999999999, 108, 698, 166.0, 263.8, 350.6499999999998, 693.94, 24.935168561739477, 179.73327941103133, 9.52114346449232], "isController": false}, {"data": ["Escolha da passagem", 250, 0, 0.0, 153.3999999999999, 95, 318, 144.0, 199.0, 239.79999999999995, 309.9200000000001, 26.296413169243714, 172.5445313321763, 9.578673937624908], "isController": false}, {"data": ["Confirmação de compra", 250, 0, 0.0, 150.53199999999998, 97, 332, 146.5, 187.70000000000002, 213.34999999999997, 294.13000000000034, 26.268782179258167, 148.27660370915206, 14.31443403908795], "isController": false}]}, function(index, item){
         switch(index){
             // Errors pct
             case 3:
